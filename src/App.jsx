@@ -6,6 +6,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newTodo, setNewTodo] = useState('');
+  const [filter, setFilter] = useState('all'); 
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -53,6 +54,13 @@ function App() {
     setNewTodo(''); 
   };
 
+  const filteredTodos = todos.filter(todo => {
+    if (filter === 'all') return true;
+    if (filter === 'completed') return todo.status;
+    if (filter === 'uncompleted') return !todo.status;
+    return true;
+  });
+
   if (loading) return <div className="flex justify-center items-center min-h-screen text-lg">Loading...</div>;
   if (error) return <div className="flex justify-center items-center min-h-screen text-red-500">Error: {error}</div>;
 
@@ -76,8 +84,30 @@ function App() {
         </button>
       </form>
       
+      {/* Filter buttons */}
+      <div className="flex justify-between mb-4">
+        <button 
+          onClick={() => setFilter('all')} 
+          className={`px-3 py-1 rounded-md text-sm transition-colors duration-300 ${filter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+        >
+          Tất cả
+        </button>
+        <button 
+          onClick={() => setFilter('completed')} 
+          className={`px-3 py-1 rounded-md text-sm transition-colors duration-300 ${filter === 'completed' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+        >
+          Đã hoàn thành
+        </button>
+        <button 
+          onClick={() => setFilter('uncompleted')} 
+          className={`px-3 py-1 rounded-md text-sm transition-colors duration-300 ${filter === 'uncompleted' ? 'bg-yellow-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+        >
+          Chưa hoàn thành
+        </button>
+      </div>
+      
       <div className="space-y-3">
-        {todos.map((todo) => (
+        {filteredTodos.map((todo) => (
           <div key={todo.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-md shadow-sm">
             <div className="flex items-center flex-1">
               <input 
