@@ -2,15 +2,27 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem('todos');
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newTodo, setNewTodo] = useState('');
   const [filter, setFilter] = useState('all'); 
 
   useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  useEffect(() => {
     const fetchTodos = async () => {
       try {
+        if (todos.length > 0) {
+          setLoading(false);
+          return;
+        }
+        
         const response = await fetch('https://67cd347add7651e464eda05a.mockapi.io/Products');
         if (!response.ok) {
           throw new Error('Lỗi khi tải dữ liệu');
