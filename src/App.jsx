@@ -28,6 +28,8 @@ function App() {
 
   const handleDelete = (id) => {
     console.log(`Xóa công việc với id: ${id}`);
+    const updatedTodos = todos.filter(todo => todo.id !== id);
+    setTodos(updatedTodos);
   };
 
   const handleAddTodo = (e) => {
@@ -80,7 +82,7 @@ function App() {
               className="ml-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition-colors duration-300" 
               onClick={() => handleDelete(todo.id)}
             >
-              Delete
+              Xóa
             </button>
           </div>
         ))}
