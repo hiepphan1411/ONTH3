@@ -61,6 +61,10 @@ function App() {
     return true;
   });
 
+
+  const totalTodos = todos.length;
+  const completedTodos = todos.filter(todo => todo.status).length;
+
   if (loading) return <div className="flex justify-center items-center min-h-screen text-lg">Loading...</div>;
   if (error) return <div className="flex justify-center items-center min-h-screen text-red-500">Error: {error}</div>;
 
@@ -104,6 +108,11 @@ function App() {
         >
           Chưa hoàn thành
         </button>
+      </div>
+      
+      {/* Todo Summary */}
+      <div className="bg-gray-100 p-3 rounded-md mb-4 text-center text-gray-700 font-medium">
+        Tổng: {totalTodos} | Hoàn thành: {completedTodos}
       </div>
       
       <div className="space-y-3">
